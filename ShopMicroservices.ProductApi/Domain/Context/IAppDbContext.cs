@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-using ShopMicroservices.ProductApi.Domain.Models;
+using ShopMicroservices.ProductApi.Application.Models;
 
 namespace ShopMicroservices.ProductApi.Domain.Context;
 

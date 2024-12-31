@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
+using ShopMicroservices.ProductApi.Application.Models;
 using ShopMicroservices.ProductApi.Domain.Context;
-using ShopMicroservices.ProductApi.Domain.Models;
 using ShopMicroservices.ProductApi.Domain.Repositories;
 using System.Xml.Linq;
 
@@ -20,7 +20,7 @@ namespace ShopMicroservices.ProductApi.Application.Repositories
             await _appDbContext.Products.InsertOneAsync(product);
         }
 
-        public async Task<bool> DeleteProduct(Guid id)
+        public async Task<bool> DeleteProduct(string id)
         {
             FilterDefinition<Product> filterDefinition = Builders<Product>.Filter.Eq(p => p.Id, id);
             DeleteResult deleteResult = await _appDbContext.Products.DeleteOneAsync(filterDefinition);
@@ -28,7 +28,7 @@ namespace ShopMicroservices.ProductApi.Application.Repositories
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
 
-        public async Task<Product> GetProduct(Guid id)
+        public async Task<Product> GetProduct(string id)
         {
             FilterDefinition<Product> filterDefinition = Builders<Product>.Filter.Eq(p => p.Id, id);
             return await _appDbContext.Products.Find(filterDefinition).FirstOrDefaultAsync();

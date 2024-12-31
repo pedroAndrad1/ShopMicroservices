@@ -1,5 +1,5 @@
 ﻿using MongoDB.Driver;
-using ShopMicroservices.ProductApi.Domain.Models;
+using ShopMicroservices.ProductApi.Application.Models;
 
 namespace ShopMicroservices.ProductApi.Infrastructure.Context;
 
@@ -8,7 +8,7 @@ public static class AppDbContextSeed
     public static void SeedData(IMongoCollection<Product> collection)
     {
         var hasCollectionData = collection.Find(p => true).Any();
-        if (hasCollectionData)
+        if (!hasCollectionData)
         {
             collection.InsertMany(CreateSeed());
         }
@@ -20,7 +20,6 @@ public static class AppDbContextSeed
         {
             new()
             {
-                Id = Guid.NewGuid(),
                 Name = "Suco de caju",
                 Description = "da fruta",
                 PriceInCents = 8 * 100,
@@ -31,7 +30,6 @@ public static class AppDbContextSeed
             },
              new()
              {
-                 Id = Guid.NewGuid(),
                  Name = "Joelho",
                  Description = "queijo e presunto",
                  PriceInCents = 6 * 100,
@@ -41,7 +39,6 @@ public static class AppDbContextSeed
                  Category = "Salgados"
              },
               new() {
-                  Id = Guid.NewGuid(),
                   Name = "Sorvete",
                   Description = "de chocolate",
                   PriceInCents = 10 * 100,

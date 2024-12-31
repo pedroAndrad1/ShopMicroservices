@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  shopmicroservices.productapi.db:
+    container_name: productapidb
+    restart: always
+    ports:
+        - "27017:27017" 
+
+  shopmicroservices.productapi:
+    container_name: shopmicroservices.productapi
+    depends_on:
+      - shopmicroservices.productapi.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings__ConnectionString=mongodb://productapidb:27017"  
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "8080"
+      - "8081"

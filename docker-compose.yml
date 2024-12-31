@@ -1,0 +1,12 @@
+version: '3.4'
+name: shop_microservices
+services:
+  shopmicroservices.productapi.db:
+    image: mongo
+    container_name: shopmicroservices.productapi.db
+
+  shopmicroservices.productapi:
+    image: ${DOCKER_REGISTRY-}shopmicroservicesproductapi
+    build:
+      context: .
+      dockerfile: ShopMicroservices.ProductApi/Dockerfile
