@@ -10,3 +10,14 @@ services:
     build:
       context: .
       dockerfile: ShopMicroservices.ProductApi/Dockerfile
+
+  shopmicroservices.basketapi.db:
+    image: redis:alpine
+    container_name: shopmicroservices.basketapi.db
+
+  shopmicroservices.basketapi:
+    image: ${DOCKER_REGISTRY-}shopmicroservicesbasketapi
+    build:
+      context: .
+      dockerfile: ShopMicroservices.BasketApi/Dockerfile
+
