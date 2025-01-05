@@ -26,7 +26,7 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("/{id}", Name = "GetProducById")]
+    [HttpGet("{id}", Name = "GetProducById")]
     public async Task<ActionResult<Product>> GetProductById(string id)
     {
         var product = await _repository.GetProduct(id);
@@ -82,7 +82,7 @@ public class ProductController : ControllerBase
         return Ok(product);
     }
 
-    [HttpDelete("/{id}")]
+    [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteProduct(string id)
     {
         var success = await _repository.DeleteProduct(id);

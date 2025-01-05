@@ -17,7 +17,7 @@ public class BasketController : ControllerBase
         _repository = repository;
     }
 
-    [HttpGet("/{username}")]
+    [HttpGet("{username}")]
     public async Task<IActionResult> GetBasket(string username)
     {
         var basket = await _repository.GetBasket(username);
@@ -33,7 +33,7 @@ public class BasketController : ControllerBase
         return Ok(basket);
     }
 
-    [HttpDelete("/{username}")]
+    [HttpDelete("{username}")]
     public async Task<IActionResult> DeleteBasket(string username)
     {
         await _repository.DeleteBasket(username);
