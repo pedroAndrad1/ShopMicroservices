@@ -39,7 +39,7 @@ public class DiscountRepository : IDiscountRepository
     public async Task<bool> UpdateDiscount(Coupon coupon)
     {
         return await ExecuteAsync(
-               "UPDATE Coupon SET ProductName=@ProductName, Description=@Description, Amount=@Amount WHERER Id = @Id",
+               "UPDATE Coupon SET ProductName=@ProductName, Description=@Description, Amount=@Amount WHERE Id = @Id",
                 new { coupon.ProductName, coupon.Description, coupon.Amount, coupon.Id }
            );
     }

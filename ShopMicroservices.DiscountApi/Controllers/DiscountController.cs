@@ -7,11 +7,11 @@ namespace ShopMicroservices.DiscountApi.Controllers
     [Route("api/v1/[controller]")]
     [ApiConventionType(typeof(DefaultApiConventions))]
     [ApiController]
-    public class Discount : ControllerBase
+    public class DiscountController : ControllerBase
     {
         private readonly IDiscountRepository _repository;
 
-        public Discount(IDiscountRepository repository)
+        public DiscountController(IDiscountRepository repository)
         {
             _repository = repository;
         }
@@ -34,7 +34,7 @@ namespace ShopMicroservices.DiscountApi.Controllers
         {
             await _repository.CreateDiscount(coupon);
 
-            return CreatedAtRoute("GetDiscount", coupon);
+            return CreatedAtRoute("GetDiscount", routeValues: new { coupon.ProductName }, value: coupon);
         }
 
         [HttpPut]

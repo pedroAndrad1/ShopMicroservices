@@ -3,7 +3,6 @@ name: shop_microservices
 services:
   shopmicroservices.productapi.db:
     image: mongo
-    container_name: shopmicroservices.productapi.db
 
   shopmicroservices.productapi:
     image: ${DOCKER_REGISTRY-}shopmicroservicesproductapi
@@ -13,11 +12,22 @@ services:
 
   shopmicroservices.basketapi.db:
     image: redis:alpine
-    container_name: shopmicroservices.basketapi.db
 
   shopmicroservices.basketapi:
     image: ${DOCKER_REGISTRY-}shopmicroservicesbasketapi
     build:
       context: .
       dockerfile: ShopMicroservices.BasketApi/Dockerfile
+
+  shopmicroservices.discountapi.db:
+    image: postgres
+
+  shopmicroservices.discountapi.pgadmin:
+    image: dpage/pgadmin4
+
+  shopmicroservices.discountapi:
+    image: ${DOCKER_REGISTRY-}shopmicroservicesdiscountapi
+    build:
+      context: .
+      dockerfile: ShopMicroservices.DiscountApi/Dockerfile
 
