@@ -13,9 +13,10 @@ services:
       - shopmicroservices.productapi.db
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - "DatabaseSettings__ConnectionString=mongodb://productapidb:27017"  
+      - DatabaseSettings__ConnectionString=mongodb://productapidb:27017
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - MassTransitSettings__RabbitMQHost=masstransit.rabbitmq
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -66,6 +67,12 @@ services:
       - ASPNETCORE_HTTP_PORTS=8084
       - ASPNETCORE_HTTPS_PORTS=8085
       - DatabaseSettings__ConnectionString=Server=discountapidb:5432;Database=DiscountDb;User ID=admin;Password=admin
+      - MassTransitSettings__RabbitMQHost=masstransit.rabbitmq
     ports:
       - "8084:8084"
       - "8085:8085"
+  masstransit.rabbitmq:
+    container_name: masstransit.rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672

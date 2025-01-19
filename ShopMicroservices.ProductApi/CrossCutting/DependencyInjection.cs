@@ -1,7 +1,11 @@
 ﻿using Asp.Versioning;
+using MassTransit;
+using ShopMicroservices.MassTransitContracts.Contracts;
 using ShopMicroservices.ProductApi.Application.Repositories;
+using ShopMicroservices.ProductApi.Application.Services;
 using ShopMicroservices.ProductApi.Domain.Context;
 using ShopMicroservices.ProductApi.Domain.Repositories;
+using ShopMicroservices.ProductApi.Domain.Services;
 using ShopMicroservices.ProductApi.Infrastructure.Context;
 
 namespace ShopMicroservices.ProductApi.CrossCutting;
@@ -14,7 +18,7 @@ public static class DependencyInjection
         services.AddScoped<IAppDbContext, AppDbContext>();
         // REPOSITORIES
         services.AddScoped<IProductRepository, ProductRepository>();
-        // Versionamento
+        // VERSIONAMENTO
         services
             .AddApiVersioning(options =>
             {
@@ -28,6 +32,26 @@ public static class DependencyInjection
                 options.GroupNameFormat = "'v'VVV";
                 options.SubstituteApiVersionInUrl = true;
             });
+        // MASS TRANSIT
+        services.AddMassTransit(options =>
+        {
+            options.UsingRabbitMq((context, config) =>
+            {
+                config.Host(
+                    configuration.GetValue<string>("MassTransitSettings:RabbitMQHost"),
+                    "/",
+                    host =>
+                    {
+                        host.Username("guest");
+                        host.Password("guest");
+                    }
+                );
+                
+                config.ConfigureEndpoints(context);
+            });
+        });
+        // SERVICES
+        services.AddScoped<IBusService, BusService>();
 
         return services;
     }

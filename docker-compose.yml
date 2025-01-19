@@ -31,3 +31,9 @@ services:
       context: .
       dockerfile: ShopMicroservices.DiscountApi/Dockerfile
 
+  masstransit.rabbitmq:
+    image: masstransit/rabbitmq
+
+
+
+

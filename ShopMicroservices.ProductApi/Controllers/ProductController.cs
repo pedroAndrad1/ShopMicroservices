@@ -1,8 +1,11 @@
 ﻿using Asp.Versioning;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopMicroservices.MassTransitContracts.Contracts;
 using ShopMicroservices.ProductApi.Application.Models;
 using ShopMicroservices.ProductApi.Domain.Repositories;
+using ShopMicroservices.ProductApi.Domain.Services;
 
 namespace ShopMicroservices.ProductApi.Controllers;
 
@@ -13,10 +16,12 @@ namespace ShopMicroservices.ProductApi.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductRepository _repository;
+    private readonly IBusService _busService;
 
-    public ProductController(IProductRepository repository)
+    public ProductController(IProductRepository repository, IBusService busService)
     {
         _repository = repository;
+        _busService = busService;
     }
 
     [HttpGet]
@@ -60,6 +65,13 @@ public class ProductController : ControllerBase
         }
 
         await _repository.CreateProduct(product);
+
+        CreateDiscountToNewProduct message = new CreateDiscountToNewProduct()
+        {
+            Name = product.Name,
+            Description = product.Description
+        };
+        await _busService.Send("ShopMicroservices.MassTransitContracts.Contracts:CreateDiscountToNewProduct", message);
 
         return CreatedAtRoute("GetProducById", new { id = product.Id }, product);
     }
