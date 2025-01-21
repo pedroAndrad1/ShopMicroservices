@@ -52,6 +52,16 @@ public class DiscountRepository : IDiscountRepository
            );
     }
 
+    public async Task InitializeDb()
+    {
+        await ExecuteAsync(
+            "CREATE DATABASE DiscountDb"
+            );
+        await ExecuteAsync(
+            "CREATE TABLE Coupon( ID SERIAL PRIMARY KEY NOT NULL, ProductName VARCHA(24) NOT NULL, Description TEXT, Amount INT"
+            );
+    }
+
 
     private NpgsqlConnection GetConnectionPostgreSql()
     {

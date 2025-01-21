@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using ShopMicroservices.DiscountApi.Application.Consumers;
 using ShopMicroservices.DiscountApi.Application.Repositories;
 using ShopMicroservices.DiscountApi.Domain.Repositories;
 
@@ -30,6 +31,7 @@ public static class DependencyInjection
             });
 
             options.AddConsumer<CreateDiscountToNewProductConsumer>();
+            options.AddConsumer<CreateDiscountToNewProductFaultConsumer>();
         });
 
         return services;

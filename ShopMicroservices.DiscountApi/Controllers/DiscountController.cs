@@ -56,6 +56,12 @@ namespace ShopMicroservices.DiscountApi.Controllers
             return Ok();
         }
 
+        [HttpGet("/init-db")]
+        public async Task<IActionResult> InitDb()
+        {
+            await _repository.InitializeDb();
+            return Ok();
+        }
 
     }
 }
