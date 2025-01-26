@@ -34,6 +34,12 @@ services:
   masstransit.rabbitmq:
     image: masstransit/rabbitmq
 
+  shopmicroservices.consul:
+    image: "hashicorp/consul"
 
-
+  shopmicroservices.gatewayapi:
+    image: ${DOCKER_REGISTRY-}shopmicroservicesgatewayapi
+    build:
+      context: .
+      dockerfile: ShopMicroservices.GatewayApi/Dockerfile
 

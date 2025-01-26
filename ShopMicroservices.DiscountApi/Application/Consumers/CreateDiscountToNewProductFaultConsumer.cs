@@ -15,7 +15,7 @@ public class CreateDiscountToNewProductFaultConsumer : IConsumer<Fault<CreateDis
 
     public Task Consume(ConsumeContext<Fault<CreateDiscountToNewProduct>> context)
     {
-        _logger.LogError($"Falha ao criar um cupom para o produto {context.Message.Message.Name}");
+        _logger.LogError($"Falha ao criar um cupom para o produto {context.Message.Message.Name}!");
         return Task.CompletedTask;
     }
 }

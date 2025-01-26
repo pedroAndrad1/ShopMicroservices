@@ -1,0 +1,6 @@
+@ShopMicroservices.GatewayApi_HostAddress = http://localhost:5149
+
+GET {{ShopMicroservices.GatewayApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

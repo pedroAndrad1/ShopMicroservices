@@ -6,7 +6,8 @@
       "serviceActions": {
         "shopmicroservices.productapi": "StartDebugging",
         "shopmicroservices.basketapi": "StartDebugging",
-        "shopmicroservices.discountapi": "StartDebugging"
+        "shopmicroservices.discountapi": "StartDebugging",
+        "shopmicroservices.gatewayapi": "StartDebugging"
       }
     }
   }

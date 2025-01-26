@@ -11,12 +11,15 @@ services:
     container_name: shopmicroservices.productapi
     depends_on:
       - shopmicroservices.productapi.db
+      - shopmicroservices.consul
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - DatabaseSettings__ConnectionString=mongodb://productapidb:27017
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - MassTransitSettings__RabbitMQHost=masstransit.rabbitmq
+      - ServiceSettings__ServiceDiscoveryAddress=http://shopmicroservices.consul:8500 
+      # - ServiceSettings__HealthCheckUrl=http://shopmicroservices.productapi/health
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -31,11 +34,13 @@ services:
     container_name: shopmicroservices.basketapi
     depends_on:
       - shopmicroservices.basketapi.db
+      - shopmicroservices.consul
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - CacheSettings__ConnectionString=basketapidb:6379
       - ASPNETCORE_HTTP_PORTS=8082
       - ASPNETCORE_HTTPS_PORTS=8083
+      - ServiceSettings__ServiceDiscoveryAddress=http://shopmicroservices.consul:8500 
     ports:
       - "8082:8082"
       - "8083:8083"
@@ -62,12 +67,14 @@ services:
     container_name: shopmicroservices.discountapi
     depends_on:
       - shopmicroservices.discountapi.db
+      - shopmicroservices.consul
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8084
       - ASPNETCORE_HTTPS_PORTS=8085
       - DatabaseSettings__ConnectionString=Server=discountapidb:5432;Database=DiscountDb;User ID=admin;Password=admin
       - MassTransitSettings__RabbitMQHost=masstransit.rabbitmq
+      - ServiceSettings__ServiceDiscoveryAddress=http://shopmicroservices.consul:8500 
     ports:
       - "8084:8084"
       - "8085:8085"
@@ -76,3 +83,17 @@ services:
     ports:
       - 15672:15672
       - 5672:5672
+
+  shopmicroservices.consul:
+    container_name: consul
+    ports:
+    - "8500:8500" 
+
+  shopmicroservices.gatewayapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8086
+      - ASPNETCORE_HTTPS_PORTS=8087
+    ports:
+      - "8086:8086"
+      - "8087:8087"

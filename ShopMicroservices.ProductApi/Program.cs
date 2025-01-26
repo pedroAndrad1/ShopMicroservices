@@ -14,6 +14,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProductApi", Version = "v1" });
 });
 builder.Services.AddInfrastructure(builder.Configuration);
+var serviceSettings = builder.Services.Bootstrap(builder.Configuration);
+builder.Services.AddConsulSettings(serviceSettings, builder.Configuration);
 
 var app = builder.Build();
 
