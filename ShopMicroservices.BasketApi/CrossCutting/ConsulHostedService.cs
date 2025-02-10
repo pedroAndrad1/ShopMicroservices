@@ -28,14 +28,14 @@ public class ConsulHostedService : IHostedService
             Port = serviceConfig.ServicePort,
         };
 
-        //var check = new AgentServiceCheck
-        //{
-        //    HTTP = serviceConfig.HealthCheckUrl,
-        //    Interval = TimeSpan.FromSeconds(serviceConfig.HealthCheckIntervalSeconds),
-        //    Timeout = TimeSpan.FromSeconds(serviceConfig.HealthCheckTimeoutSeconds)
-        //};
+        var check = new AgentServiceCheck
+        {
+            HTTP = serviceConfig.HealthCheckUrl,
+            Interval = TimeSpan.FromSeconds(serviceConfig.HealthCheckIntervalSeconds),
+            Timeout = TimeSpan.FromSeconds(serviceConfig.HealthCheckTimeoutSeconds)
+        };
 
-        //registration.Checks = new[] { check };
+        registration.Checks = new[] { check };
 
         _logger.LogInformation($"Registrando service no Consul: {registration.Name}");
 

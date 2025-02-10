@@ -5,16 +5,18 @@ using ShopMicroservices.BasketApi.Domain.Repositories;
 
 namespace ShopMicroservices.BasketApi.Controllers;
 
-[Route("api/v1/[controller]")]
+[Route("api/[controller]")]
 [ApiConventionType(typeof(DefaultApiConventions))]
 [ApiController]
 public class BasketController : ControllerBase
 {
     private readonly IBasketRepository _repository;
+    private readonly ILogger<BasketController> _logger;
 
-    public BasketController(IBasketRepository repository)
+    public BasketController(IBasketRepository repository, ILogger<BasketController> logger)
     {
         _repository = repository;
+        _logger = logger;
     }
 
     [HttpGet("{username}")]
@@ -37,6 +39,13 @@ public class BasketController : ControllerBase
     public async Task<IActionResult> DeleteBasket(string username)
     {
         await _repository.DeleteBasket(username);
+        return Ok();
+    }
+
+    [HttpGet("health")]
+    public ActionResult HealthCheck()
+    {
+        _logger.LogInformation("Fazendo HealthCheck com o Consul");
         return Ok();
     }
 }

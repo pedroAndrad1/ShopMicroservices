@@ -2,13 +2,13 @@
   "Routes": [],
   "GlobalConfiguration": {
     "ServiceDiscoveryProvider": {
-      "Host": "localhost",
+      "Host": "shopmicroservices.consul",
       "Port": 8500,
-      "Type": "Consul"
+      "Type": "Consul",
+      "Scheme": "http"
     },
-    "LoadBalancerOptions": {
-      "Type": "LeastConnection"
-    },
-    "DownstreamScheme": "http"
+    "FileCacheOptions": {
+      "PollingInterval": 0
+    }
   }
 }

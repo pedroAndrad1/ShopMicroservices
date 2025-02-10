@@ -10,18 +10,20 @@ using ShopMicroservices.ProductApi.Domain.Services;
 namespace ShopMicroservices.ProductApi.Controllers;
 
 [ApiVersion("1.0")]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/[controller]")]
 [ApiConventionType(typeof(DefaultApiConventions))]
 [ApiController]
 public class ProductController : ControllerBase
 {
     private readonly IProductRepository _repository;
     private readonly IBusService _busService;
+    private readonly ILogger<ProductController> _logger;
 
-    public ProductController(IProductRepository repository, IBusService busService)
+    public ProductController(IProductRepository repository, IBusService busService, ILogger<ProductController> logger)
     {
         _repository = repository;
         _busService = busService;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -104,6 +106,13 @@ public class ProductController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
+        return Ok();
+    }
+
+    [HttpGet("health")]
+    public ActionResult HealthCheck()
+    {
+        _logger.LogInformation("Fazendo HealthCheck com o Consul");
         return Ok();
     }
 }

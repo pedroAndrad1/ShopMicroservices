@@ -4,16 +4,18 @@ using ShopMicroservices.DiscountApi.Domain.Repositories;
 
 namespace ShopMicroservices.DiscountApi.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     [ApiConventionType(typeof(DefaultApiConventions))]
     [ApiController]
     public class DiscountController : ControllerBase
     {
         private readonly IDiscountRepository _repository;
+        private readonly ILogger<DiscountController> _logger;
 
-        public DiscountController(IDiscountRepository repository)
+        public DiscountController(IDiscountRepository repository, ILogger<DiscountController> logger)
         {
             _repository = repository;
+            _logger = logger;
         }
 
         [HttpGet("{productName}", Name = "GetDiscount")]
@@ -63,5 +65,11 @@ namespace ShopMicroservices.DiscountApi.Controllers
             return Ok();
         }
 
+        [HttpGet("health")]
+        public ActionResult HealthCheck()
+        {
+            _logger.LogInformation("Fazendo HealthCheck com o Consul");
+            return Ok();
+        }
     }
 }

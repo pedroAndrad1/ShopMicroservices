@@ -1,6 +1,7 @@
 ﻿
 using Consul;
 using ShopMicroservices.ProductApi.CrossCutting.SettingsModels;
+using System.Net;
 
 namespace ShopMicroservices.ProductApi.CrossCutting;
 
@@ -20,7 +21,8 @@ public class ConsulHostedService : IHostedService
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         var serviceConfig = _configuration.GetSection("ServiceSettings").Get<ServiceSettings>();
-        var registration = new AgentServiceRegistration
+        var serviceIp = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0];
+        var registration = new AgentServiceRegistration()
         {
             ID = serviceConfig!.ServiceName,
             Name = serviceConfig.ServiceName,
@@ -28,14 +30,15 @@ public class ConsulHostedService : IHostedService
             Port = serviceConfig.ServicePort,
         };
 
-        //var check = new AgentServiceCheck
-        //{
-        //    HTTP = serviceConfig.HealthCheckUrl,
-        //    Interval = TimeSpan.FromSeconds(serviceConfig.HealthCheckIntervalSeconds),
-        //    Timeout = TimeSpan.FromSeconds(serviceConfig.HealthCheckTimeoutSeconds)
-        //};
+        var check = new AgentServiceCheck
+        {
+            HTTP = serviceConfig.HealthCheckUrl,
+            Interval = TimeSpan.FromSeconds(serviceConfig.HealthCheckIntervalSeconds),
+            Timeout = TimeSpan.FromSeconds(serviceConfig.HealthCheckTimeoutSeconds),
+            TLSSkipVerify = true
+        };
 
-        //registration.Checks = new[] { check };
+        registration.Checks = new[] { check };
 
         _logger.LogInformation($"Registrando service no Consul: {registration.Name}");
 

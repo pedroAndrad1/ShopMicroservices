@@ -1,14 +1,30 @@
 {
-  "Routes": [],
   "GlobalConfiguration": {
     "ServiceDiscoveryProvider": {
-      "Host": "localhost",
+      "Scheme": "http",
+      "Host": "shopmicroservices.consul",
       "Port": 8500,
       "Type": "Consul"
+    }
+  },
+  "Routes": [
+    {
+      "ServiceName": "shopmicroservices.productapi",
+      "DownstreamPathTemplate": "/api/product/{everything}",
+      "UpstreamPathTemplate": "/shopmicroservices.productapi/{everything}",
+      "DownstreamScheme": "http"
     },
-    "LoadBalancerOptions": {
-      "Type": "LeastConnection"
+    {
+      "ServiceName": "shopmicroservices.discountapi",
+      "DownstreamPathTemplate": "/api/discount/{everything}",
+      "UpstreamPathTemplate": "/shopmicroservices.discountapi/{everything}",
+      "DownstreamScheme": "http"
     },
-    "DownstreamScheme": "http"
-  }
+    {
+      "ServiceName": "shopmicroservices.basketapi",
+      "DownstreamPathTemplate": "/api/basket/{everything}",
+      "UpstreamPathTemplate": "/shopmicroservices.basketapi/{everything}",
+      "DownstreamScheme": "http"
+    }
+  ]
 }

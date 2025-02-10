@@ -16,7 +16,14 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddInfrastructure(builder.Configuration);
 var serviceSettings = builder.Services.Bootstrap(builder.Configuration);
 builder.Services.AddConsulSettings(serviceSettings, builder.Configuration);
-
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8080); // Endpoint HTTP
+    options.ListenAnyIP(8081, listenOptions =>
+    {
+        listenOptions.UseHttps(); // Endpoint HTTPS
+    });
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,8 +40,7 @@ if (app.Environment.IsDevelopment())
         }
     });
 }
-
-app.UseHttpsRedirection();
+if(app.Environment.IsProduction()) app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
